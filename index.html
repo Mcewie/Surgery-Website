@@ -4,50 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
-  <title>Riverbank Surgery — Sign In</title>
+  <title>Home — Riverbank Surgery</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
-<body class="auth-body">
-  <main class="auth-card">
-    <div class="brand">
-      <div class="brand-mark">RS</div>
+<body>
+  <div data-include="nav"></div>
+
+  <main class="container">
+    <header class="page-header">
       <h1>Riverbank Surgery</h1>
-      <p class="brand-sub">Private project workspace</p>
-    </div>
+      <p class="lede">Private workspace for project documents, status, and key information.</p>
+    </header>
 
-    <form id="login-form" class="auth-form" autocomplete="off">
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required placeholder="you@example.com" />
-
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required placeholder="Enter access password" />
-
-      <button type="submit">Sign in</button>
-      <p id="auth-error" class="auth-error" hidden></p>
-    </form>
-
-    <p class="auth-foot">
-      Authorised access only. Activity may be logged.
-    </p>
+    <section class="grid grid-3">
+      <a class="tile" href="overview.html">
+        <h2>Overview</h2>
+        <p>Project summary, scope, stakeholders, and current status.</p>
+      </a>
+      <a class="tile" href="timeline.html">
+        <h2>Timeline</h2>
+        <p>Milestones, key dates, and a visual project schedule.</p>
+      </a>
+      <a class="tile" href="documents.html">
+        <h2>Documents</h2>
+        <p>All project documents and reference material in one place.</p>
+      </a>
+      <a class="tile" href="information.html">
+        <h2>Key Information</h2>
+        <p>Contacts, locations, regulatory, and operational details.</p>
+      </a>
+      <a class="tile" href="updates.html">
+        <h2>Updates</h2>
+        <p>Latest news and progress notes from the project team.</p>
+      </a>
+      <a class="tile" href="contact.html">
+        <h2>Contact</h2>
+        <p>Get in touch with the project leads and team members.</p>
+      </a>
+    </section>
   </main>
 
-  <script src="assets/auth.js"></script>
-  <script>
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value.trim().toLowerCase();
-      const password = document.getElementById('password').value;
-      const errorEl = document.getElementById('auth-error');
-      errorEl.hidden = true;
+  <div data-include="footer"></div>
 
-      const ok = await Auth.signIn(email, password);
-      if (ok) {
-        window.location.href = 'home.html';
-      } else {
-        errorEl.textContent = 'Invalid email or password.';
-        errorEl.hidden = false;
-      }
-    });
-  </script>
+  <script src="assets/main.js"></script>
 </body>
 </html>

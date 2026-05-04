@@ -1,12 +1,18 @@
 # Riverbank Surgery — private project workspace
 
-A small static site holding the Riverbank Surgery project's overview,
-timeline, documents and key information, behind an email + password gate.
+A small static website holding the Riverbank Surgery project's overview,
+timeline, documents and key information.
+
+Privacy is enforced by **Cloudflare Access**: visitors enter their email,
+Cloudflare emails them a one-time PIN, and only allow-listed addresses
+get in. There is **no in-page password** — the gate is at the host.
+
+For step-by-step deployment instructions written for non-developers, see
+**[DEPLOY.md](DEPLOY.md)**.
 
 ## Pages
 
-- `index.html` — sign in (email + password)
-- `home.html` — landing tiles
+- `index.html` — landing page with tiles linking to the rest
 - `overview.html` — summary, objectives, scope, stakeholders, status
 - `timeline.html` — milestones with done / current / upcoming markers
 - `documents.html` — searchable document table; files live in `docs/`
@@ -16,9 +22,9 @@ timeline, documents and key information, behind an email + password gate.
 
 ## Editing content
 
-Each page is plain HTML — open the file and edit text directly. Most
-sections include a small grey hint pointing to the file to edit. Replace
-all `[bracketed placeholders]` with real values.
+Each page is plain HTML. Most sections include a small grey hint
+pointing to the file to edit. Replace all `[bracketed placeholders]`
+with real values.
 
 To add a document:
 
@@ -30,52 +36,6 @@ To add a timeline milestone, copy a `<li class="timeline-item">` block in
 `timeline.html`. Add `done` for past, `current` for active, or leave
 blank for upcoming.
 
-## Access (the email + password gate)
-
-The default credentials are:
-
-- **Email:** any email (no whitelist by default)
-- **Password:** `riverbank2026`
-
-### Change the password
-
-Open a browser dev-tools console and run:
-
-```js
-crypto.subtle.digest('SHA-256', new TextEncoder().encode('YOUR-NEW-PASSWORD'))
-  .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')));
-```
-
-Copy the printed hex string into `assets/auth.js` as the value of
-`PASSWORD_HASH`.
-
-### Restrict to specific emails
-
-In `assets/auth.js`, set `ALLOWED_EMAILS` to a list of permitted
-addresses, e.g.:
-
-```js
-const ALLOWED_EMAILS = ['alice@example.com', 'bob@example.com'];
-```
-
-Leave the array empty to accept any email (the password is the gate).
-
-## Important: this gate is a deterrent, not real security
-
-The password hash and the allowed-email list are baked into the static
-JavaScript that the browser downloads, so a determined visitor with
-dev-tools can read them. Use one of the following for genuine privacy:
-
-- **Netlify Site Protection** — site-wide password (paid feature).
-- **Cloudflare Access / Pages Access Policies** — email-link or SSO.
-- **GitHub Pages + an authenticating proxy** (e.g. Cloudflare Access).
-- **Vercel password protection** — site-wide password.
-- A private host requiring login at the HTTP layer.
-
-For a small private project that just needs to deter casual visitors,
-the built-in gate is fine. Keep the repository **private** in either
-case so the source isn't public.
-
 ## Running locally
 
 It's just static files — open `index.html` directly, or serve the
@@ -86,12 +46,5 @@ python3 -m http.server 8000
 # then visit http://localhost:8000/
 ```
 
-## Deploy
-
-Push to any static host:
-
-- **Netlify / Vercel / Cloudflare Pages:** drag-drop the folder, or
-  connect the repo. No build step.
-- **GitHub Pages:** enable Pages on the `main` branch, root.
-
-Combine with the host's password / access protection for real privacy.
+There is no login when running locally — the Cloudflare Access gate
+only kicks in once the site is deployed behind Cloudflare.

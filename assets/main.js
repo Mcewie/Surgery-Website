@@ -1,20 +1,17 @@
-// Shared chrome (nav + footer) and auth guard for protected pages.
+// Shared site chrome: injects the top navigation and footer into every
+// page that contains <div data-include="nav"></div> and
+// <div data-include="footer"></div>.
 
 (function () {
-  // Auth guard — must run before rendering anything sensitive.
-  if (typeof Auth !== 'undefined') {
-    Auth.requireAuth();
-  }
-
   const navHTML = `
     <header class="site-nav">
       <div class="nav-inner container">
-        <a class="nav-brand" href="home.html">
+        <a class="nav-brand" href="index.html">
           <span class="brand-mark small">RS</span>
           <span>Riverbank Surgery</span>
         </a>
         <nav>
-          <a href="home.html" data-nav="home">Home</a>
+          <a href="index.html" data-nav="index">Home</a>
           <a href="overview.html" data-nav="overview">Overview</a>
           <a href="timeline.html" data-nav="timeline">Timeline</a>
           <a href="documents.html" data-nav="documents">Documents</a>
@@ -22,7 +19,6 @@
           <a href="updates.html" data-nav="updates">Updates</a>
           <a href="contact.html" data-nav="contact">Contact</a>
         </nav>
-        <button id="signout-btn" class="ghost" type="button">Sign out</button>
       </div>
     </header>
   `;
@@ -39,17 +35,8 @@
   document.querySelectorAll('[data-include="nav"]').forEach(el => { el.outerHTML = navHTML; });
   document.querySelectorAll('[data-include="footer"]').forEach(el => { el.outerHTML = footerHTML; });
 
-  // Highlight current nav item.
-  const path = window.location.pathname.split('/').pop().replace('.html', '') || 'home';
+  // Highlight the current nav item.
+  const path = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
   const activeLink = document.querySelector(`[data-nav="${path}"]`);
   if (activeLink) activeLink.classList.add('active');
-
-  // Sign-out wiring.
-  const signOutBtn = document.getElementById('signout-btn');
-  if (signOutBtn) {
-    signOutBtn.addEventListener('click', () => {
-      if (typeof Auth !== 'undefined') Auth.signOut();
-      window.location.href = 'index.html';
-    });
-  }
 })();
