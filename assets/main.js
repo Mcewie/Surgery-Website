@@ -1,42 +1,94 @@
-// Shared site chrome: injects the top navigation and footer into every
-// page that contains <div data-include="nav"></div> and
-// <div data-include="footer"></div>.
+// Riverbank, Westcott — site behaviour.
+//
+// The enquiry form has no server: submitting it opens a pre-filled email to
+// the selling agent. Set AGENT_EMAIL once the agent is appointed.
+
+const AGENT_EMAIL = 'agent@example.com'; // TO CONFIRM: selling agent's enquiry address
 
 (function () {
-  const navHTML = `
-    <header class="site-nav">
-      <div class="nav-inner container">
-        <a class="nav-brand" href="index.html">
-          <span class="brand-mark small">RS</span>
-          <span>Riverbank Surgery</span>
-        </a>
-        <nav>
-          <a href="index.html" data-nav="index">Home</a>
-          <a href="overview.html" data-nav="overview">Overview</a>
-          <a href="timeline.html" data-nav="timeline">Timeline</a>
-          <a href="documents.html" data-nav="documents">Documents</a>
-          <a href="information.html" data-nav="information">Information</a>
-          <a href="updates.html" data-nav="updates">Updates</a>
-          <a href="contact.html" data-nav="contact">Contact</a>
-        </nav>
-      </div>
-    </header>
-  `;
+  // ---------- Mobile navigation ----------
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('nav-links');
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    nav.addEventListener('click', e => {
+      if (e.target.closest('a')) {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
-  const footerHTML = `
-    <footer class="site-foot">
-      <div class="container">
-        <p>&copy; ${new Date().getFullYear()} Riverbank Surgery — private project workspace.</p>
-        <p class="muted small">Confidential. Do not share access without authorisation.</p>
-      </div>
-    </footer>
-  `;
+  // ---------- Highlight the section in view ----------
+  const links = nav ? Array.from(nav.querySelectorAll('a[href^="#"]')) : [];
+  if (links.length && 'IntersectionObserver' in window) {
+    const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        links.forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+        const link = byId.get(entry.target.id);
+        if (link) { link.classList.add('active'); link.setAttribute('aria-current', 'true'); }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    byId.forEach((_, id) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  }
 
-  document.querySelectorAll('[data-include="nav"]').forEach(el => { el.outerHTML = navHTML; });
-  document.querySelectorAll('[data-include="footer"]').forEach(el => { el.outerHTML = footerHTML; });
+  // ---------- Disabled "Register to bid" placeholder ----------
+  document.querySelectorAll('a[aria-disabled="true"]').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
 
-  // Highlight the current nav item.
-  const path = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-  const activeLink = document.querySelector(`[data-nav="${path}"]`);
-  if (activeLink) activeLink.classList.add('active');
+  // ---------- Enquiry form -> pre-filled email ----------
+  const form = document.getElementById('enquiry-form');
+  if (!form) return;
+  const errorBox = document.getElementById('form-error');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const value = name => String(data.get(name) || '').trim();
+
+    const problems = [];
+    const nameInput = form.elements.name;
+    const emailInput = form.elements.email;
+    nameInput.removeAttribute('aria-invalid');
+    emailInput.removeAttribute('aria-invalid');
+
+    if (!value('name')) { problems.push('your name'); nameInput.setAttribute('aria-invalid', 'true'); }
+    if (!emailInput.checkValidity() || !value('email')) {
+      problems.push('a valid email address');
+      emailInput.setAttribute('aria-invalid', 'true');
+    }
+    if (problems.length) {
+      errorBox.textContent = 'Please enter ' + problems.join(' and ') + '.';
+      errorBox.hidden = false;
+      form.querySelector('[aria-invalid="true"]').focus();
+      return;
+    }
+    errorBox.hidden = true;
+
+    const lines = [
+      'Enquiry: Riverbank, Westcott',
+      '',
+      'Name: ' + value('name'),
+      'Email: ' + value('email'),
+      'Phone: ' + (value('phone') || '—'),
+      'Company: ' + (value('company') || '—'),
+      'Wider marketing: ' + (data.get('marketing') ? 'Yes, happy to hear about other properties' : 'No'),
+      '',
+      'Message:',
+      value('message') || '—',
+    ];
+    const href = 'mailto:' + AGENT_EMAIL +
+      '?subject=' + encodeURIComponent('Register interest — Riverbank, Westcott') +
+      '&body=' + encodeURIComponent(lines.join('\n'));
+    window.location.href = href;
+  });
 })();
