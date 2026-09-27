@@ -35,6 +35,10 @@ replace the whole `<span class="todo">…</span>` with the verified text.
 - **Register to bid:** set the button's `href` to the auctioneer's listing
   and remove `is-disabled` and `aria-disabled="true"`.
 
+### Source documents are not stored here
+
+The family's source documents stay out of this repository, and none of them is published as a download. That covers the 2022 valuation report (prepared for a third party), copies of the title register and plan, and the Simon Best Associates planning drawings, which are copyright. The floor plan on the site is our own indicative schematic. Planning records are linked on the council's portal rather than rehosted.
+
 ### Wording rules (from the brief)
 
 Keep the headline, images and main copy as cautious as the small print:
@@ -42,6 +46,7 @@ Keep the headline, images and main copy as cautious as the small print:
 - Don't promise vacant possession, a relocation date or residential consent.
 - Don't describe the rent as secure or NHS-guaranteed.
 - Don't describe the practice as unlawful occupiers.
+- Always mention the condition 5 use restriction (MO/89/1022) and the withdrawn 2021 application wherever alternative use is discussed.
 - Present suggested plan amendments as suggestions, never as adopted policy.
 - Label any future-use concept image *illustrative and unapproved*.
 
@@ -56,9 +61,13 @@ Work through this list before the site goes public:
 5. Every **To confirm** marker is replaced (`grep -n 'class="todo"' *.html` returns nothing).
 6. Photos are confirmed as unedited and accurate, or replaced with the agent's professional photography. The two current photos appear heavily processed.
 7. The privacy notice is completed by the agent, and `AGENT_EMAIL` is set.
-8. The draft banners in `index.html` and `privacy.html` are deleted.
-9. `<meta name="robots" content="noindex, nofollow">` is removed from both pages.
-10. The Cloudflare Access gate is removed (see DEPLOY.md, "Going public").
+8. The facts taken from the February 2022 valuation inspection are verified: floor areas (new measured survey), EPC (register), flood zones, services.
+9. Parking rights and the title boundary are confirmed. The parking area in front of the building is understood to be outside title SY607273.
+10. The current Green Belt status is confirmed, and the planning history is checked against the council's records. Replace the general planning-portal links with direct links to MO/89/1022, MO/91/0243 and MO/2021/2158.
+11. The seller's identity and authority are confirmed. The last register seen (February 2022) names a trustee company as registered proprietor.
+12. The draft banners in `index.html` and `privacy.html` are deleted.
+13. `<meta name="robots" content="noindex, nofollow">` is removed from both pages.
+14. The Cloudflare Access gate is removed (see DEPLOY.md, "Going public").
 
 ## Running locally
 

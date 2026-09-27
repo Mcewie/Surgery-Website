@@ -19,3 +19,9 @@ Use descriptive filenames that include a date, for example:
 buyer pack.** Don't upload the family's evidence archive, the working
 evidence bundle or any privileged legal advice. Everything in this folder
 is publicly downloadable once the site goes live.
+
+Planning records (MO/89/1022, MO/91/0243, MO/2021/2158) are public on the
+Mole Valley planning portal. Link to them rather than uploading copies.
+Don't upload the 2022 valuation report, non-official title copies or the
+Simon Best Associates drawings. The drawings are copyright and can only
+be reproduced with written consent.

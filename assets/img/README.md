@@ -4,7 +4,7 @@
 |---|---|---|
 | `riverbank-front.jpg` | Main photo at the top of the page | Supplied (please confirm it is unedited) |
 | `riverbank-rear-garden.jpg` | Property gallery: rear elevation and garden | Supplied (please confirm it is unedited) |
-| `floor-plan-ground.jpg`, `floor-plan-first.jpg` | Floor plans | Awaiting measured plans |
+| `floor-plan-ground.jpg`, `floor-plan-first.jpg` | Measured floor plans. Until then, the page shows an indicative SVG schematic drawn in `index.html` | Awaiting a new measured survey |
 | `site-plan.jpg` | Site plan (label boundaries *indicative* unless taken from the title plan) | Awaiting |
 | `interior-1.jpg`, `interior-2.jpg`, … | Interior gallery | Awaiting |
 

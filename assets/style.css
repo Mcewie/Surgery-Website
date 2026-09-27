@@ -255,3 +255,22 @@ input[aria-invalid=true] { border-color: #a4321f; }
 /* ---------- Simple page (privacy) ---------- */
 .page { padding: 48px 0 72px; }
 .page h2 { font-size: 1.4rem; margin-top: 1.6em; }
+
+/* ---------- Schematic floor plans ---------- */
+.floorplan { margin: 16px 0 0; }
+.plan-grid { display: grid; gap: 24px; align-items: start; }
+@media (min-width: 900px) { .plan-grid { grid-template-columns: 1.6fr 1fr; gap: 40px; } }
+.plan-title { font-weight: 600; font-size: 15px; margin: 0 0 8px; }
+.plan { width: 100%; height: auto; display: block; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.plan .room { fill: var(--surface); stroke: var(--ink-soft); stroke-width: 1.5; }
+.plan .circ { fill: var(--bg-alt); stroke: var(--ink-soft); stroke-width: 1.5; }
+.plan .stairs { fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 3; }
+.plan .outline { fill: none; stroke: var(--ink); stroke-width: 5; stroke-linejoin: miter; }
+.plan text { font: 600 16px var(--sans); fill: var(--ink); text-anchor: middle; }
+.plan text.area { font-weight: 400; fill: var(--ink-soft); }
+.plan text.minor { font-weight: 400; font-size: 13px; fill: var(--muted); }
+
+/* ---------- Planning history ---------- */
+.history td:first-child { white-space: nowrap; font-weight: 600; }
+.conditions { margin: 8px 0 0; padding-left: 18px; }
+.conditions li { margin-bottom: 6px; }
