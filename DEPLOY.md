@@ -106,6 +106,38 @@ Anyone whose email is **not** on your list will be politely refused.
 
 ---
 
+## Step 3b — The approved-bidder data room
+
+The bid pack lives in the `data-room/` folder. Only approved bidders may see
+it, and a second Cloudflare Access application enforces that.
+
+1. In **Zero Trust** → **Access** → **Applications**, click **Add an
+   application** → **Self-hosted**.
+2. **Application name:** `Riverbank data room`. For **Application domain**,
+   enter your site's domain, and set **Path** to `data-room`.
+3. Add a policy called `Approved bidders`, with **Action** set to `Allow`,
+   **Include** → **Emails**, and one approved bidder's email per line.
+   Also add the agent's own email so they can check the room.
+4. Save.
+
+**To approve a bidder** (after the agent has verified their ID and funds
+and received the £200 fee and £1,000 deposit), add their email to the
+`Approved bidders` policy. They then sign in at `<your site>/data-room/`
+with a one-time PIN sent to that email.
+
+**To remove a bidder**, delete their email from the policy. It takes effect
+immediately.
+
+While the site is still a draft, the Step 3 gate protects everything,
+including the data room. When the main site goes public, **leave this data
+room application in place**.
+
+> Data room files are committed to the GitHub repository. Keep the
+> repository **private**. Otherwise ask the agent to host the documents in
+> their own data room and link to it from `data-room/index.html`.
+
+---
+
 ## Step 4 (optional) — Use a custom domain
 
 The `*.pages.dev` URL works forever, but if you own a domain (e.g.

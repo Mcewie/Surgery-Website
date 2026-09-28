@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- DRAFT: remove noindex at launch (see README launch checklist). -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Apply to register — Riverbank, Westcott</title>
+  <meta name="description" content="Apply to register as a bidder for Riverbank, Westcott. Approved, verified parties only." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- DRAFT BANNER: delete this whole element at launch. -->
+  <div class="draft-banner" role="note">
+    <div class="container"><strong>Draft for review.</strong> Registration is not yet open. Fees, deposit terms and the agent's details must be confirmed before launch.</div>
+  </div>
+
+  <header class="site-nav">
+    <div class="container nav-inner">
+      <a class="brand" href="index.html">Riverbank<span>, Westcott</span></a>
+      <a class="btn btn-ghost btn-sm" href="index.html">Back to property</a>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <div class="container reg-grid">
+      <div class="reg-intro">
+        <p class="eyebrow">Sealed bid registration</p>
+        <h1>Apply to register as a bidder</h1>
+        <p class="lede">Registration is limited to parties who can show they have the funds to proceed. Once approved, you'll get access to the full bid pack and can submit a sealed bid.</p>
+
+        <ol class="mini-steps">
+          <li><strong>Apply</strong> using this form.</li>
+          <li><strong>Verify.</strong> The agent confirms your identity and <strong>proof of funds</strong>.</li>
+          <li><strong>Pay</strong> the £200 registration fee (non-refundable) and the £1,000 bid deposit (refundable) to the agent's client account.</li>
+          <li><strong>Access</strong> the secure data room and bid form.</li>
+        </ol>
+
+        <div class="panel">
+          <h2 class="panel-title">Proof of funds</h2>
+          <p>Please <strong>don't attach bank statements or ID to the email this form creates</strong>. After you apply, the agent will send you a secure way to provide:</p>
+          <ul>
+            <li>photo ID and proof of address (for each individual, or for the directors and owners of a company);</li>
+            <li>evidence of funds at the level you intend to bid, such as a recent bank or solicitor's letter, or a mortgage agreement in principle with evidence of the balance.</li>
+          </ul>
+        </div>
+
+        <dl class="facts compact">
+          <div><dt>Registration fee</dt><dd>£200, non-refundable</dd></div>
+          <div><dt>Bid deposit</dt><dd>£1,000, refundable on the <a href="terms.html">terms</a></dd></div>
+          <div><dt>Payments to</dt><dd><span class="todo">To confirm — client account holder</span></dd></div>
+          <div><dt>Contact</dt><dd><span class="todo">To confirm — agent name, telephone and email</span></dd></div>
+        </dl>
+      </div>
+
+      <form class="enquiry reg-form" id="register-form" novalidate
+            data-mailto="Bidder registration — Riverbank, Westcott"
+            data-mailto-intro="Application to register as a bidder: Riverbank, Westcott">
+        <fieldset>
+          <legend>Your details</legend>
+          <div class="field">
+            <label for="r-name">Full name <span aria-hidden="true">*</span></label>
+            <input id="r-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="r-email">Email <span aria-hidden="true">*</span></label>
+              <input id="r-email" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div class="field">
+              <label for="r-phone">Telephone <span aria-hidden="true">*</span></label>
+              <input id="r-phone" name="phone" type="tel" autocomplete="tel" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-address">Address <span aria-hidden="true">*</span></label>
+            <textarea id="r-address" name="address" rows="3" autocomplete="street-address" required></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>How you are buying</legend>
+          <div class="field">
+            <p class="field-label" id="capacity-l">Buying as <span aria-hidden="true">*</span></p>
+            <div class="radios" role="radiogroup" aria-labelledby="capacity-l">
+              <label><input type="radio" name="capacity" value="Individual" data-label="Buying as" required /> Individual</label>
+              <label><input type="radio" name="capacity" value="Company or organisation" data-label="Buying as" /> Company or organisation</label>
+              <label><input type="radio" name="capacity" value="Agent for a buyer" data-label="Buying as" /> Agent for a buyer</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-company">Company or buyer name <span class="optional">(optional)</span></label>
+            <input id="r-company" name="company" type="text" autocomplete="organization" />
+          </div>
+          <div class="field">
+            <p class="field-label" id="funding-l">Funding <span aria-hidden="true">*</span></p>
+            <div class="radios" role="radiogroup" aria-labelledby="funding-l">
+              <label><input type="radio" name="funding" value="Cash" data-label="Funding" required /> Cash</label>
+              <label><input type="radio" name="funding" value="Finance" data-label="Funding" /> Finance</label>
+              <label><input type="radio" name="funding" value="Cash and finance" data-label="Funding" /> Cash and finance</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="r-solicitor">Your solicitor (firm and contact) <span aria-hidden="true">*</span></label>
+            <input id="r-solicitor" name="solicitor" type="text" required />
+          </div>
+          <div class="field">
+            <label for="r-notes">Anything else we should know <span class="optional">(optional)</span></label>
+            <textarea id="r-notes" name="notes" rows="3"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Declarations</legend>
+          <div class="check">
+            <input id="d-terms" name="terms" type="checkbox" required data-label="I have read the sealed bid terms" />
+            <label for="d-terms">I have read the <a href="terms.html" target="_blank" rel="noopener">sealed bid terms</a>.</label>
+          </div>
+          <div class="check">
+            <input id="d-checks" name="checks" type="checkbox" required data-label="I consent to identity, AML and proof-of-funds checks" />
+            <label for="d-checks">I consent to identity, anti-money-laundering and proof-of-funds checks.</label>
+          </div>
+          <div class="check">
+            <input id="d-fee" name="fee" type="checkbox" required data-label="I understand the £200 fee is non-refundable and the £1,000 deposit is refundable on the terms" />
+            <label for="d-fee">I understand the £200 registration fee is non-refundable and the £1,000 bid deposit is refundable on the terms set out.</label>
+          </div>
+          <div class="check">
+            <input id="d-marketing" name="marketing" type="checkbox" data-label="Happy to hear about other properties" />
+            <label for="d-marketing">I'd also like to hear about other properties from the agent. (Optional, and not needed to register.)</label>
+          </div>
+        </fieldset>
+
+        <p class="form-error" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit">Submit application</button>
+        <p class="note">Submitting opens a pre-filled email to the agent in your email app. Nothing is charged until you have been verified. See the <a href="privacy.html">privacy notice</a>.</p>
+      </form>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="container">
+      <p><strong>Riverbank, Westcott</strong> · Sealed bid process run by <span class="todo">To confirm — appointed agent or solicitor, acting for the owner</span></p>
+      <p class="note"><a href="terms.html">Sealed bid terms</a> · <a href="privacy.html">Privacy notice</a></p>
+    </div>
+  </footer>
+
+  <script src="assets/main.js"></script>
+</body>
+</html>

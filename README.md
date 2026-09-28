@@ -1,4 +1,4 @@
-# Riverbank, Westcott — sale website
+# Riverbank, Westcott — sealed bid website
 
 A small static website that presents Riverbank, Westcott to property
 investors as an occupied commercial freehold, with the occupation dispute
@@ -12,28 +12,47 @@ Anything still waiting on verified information shows as an amber
 
 ## Files
 
-- `index.html` is the main property page. Its sections are Property,
-  Investment, Occupation, Planning, Documents, Auction and Register interest.
-- `privacy.html` explains how enquiries are handled (a template the agent completes).
-- `assets/style.css` holds the styles. `assets/main.js` runs the mobile menu,
-  highlights the nav link for the section in view, and turns the enquiry
-  form into an email.
-- `assets/img/` holds photos and plans (see `assets/img/README.md`).
-- `docs/` holds downloadable documents (see `docs/README.md`).
+- `index.html` is the public property page. It has the key disclosures,
+  the reasons to bid, the process (fees, deposit, steps) and a
+  document list that shows which documents are for approved bidders only.
+- `register.html` is the bidder application form. It builds an email to
+  the agent, who verifies ID and proof of funds.
+- `terms.html` holds the **draft** sealed bid terms, which the solicitor must approve.
+- `privacy.html` covers the handling of registration, AML and proof-of-funds data.
+- `data-room/` is the approved-bidder area, gated by Cloudflare Access (DEPLOY.md,
+  Step 3b). It holds `index.html` (the bid pack), `bid-form.html` (a printable
+  sealed bid form) and `files/`, where the documents go.
+- `assets/style.css` holds the styles. `assets/main.js` runs the navigation,
+  form validation and the email that each form builds.
+- `assets/img/` holds photos (see `assets/img/README.md`).
+
+## How the sealed bid process works
+
+1. The applicant fills in `register.html`, which emails the agent.
+2. The agent verifies the applicant's ID, AML and **proof of funds**, and
+   takes the **£200 non-refundable registration fee** and the **£1,000
+   refundable bid deposit** into the agent's client account.
+3. The agent adds the bidder's email to the data room Access policy.
+4. The bidder downloads the bid pack and submits a sealed bid on the bid
+   form by the closing date.
+
+The website never takes payments or stores bids.
 
 ## Editing content
 
 Each page is plain HTML. To fill in a placeholder, search for `todo` and
 replace the whole `<span class="todo">…</span>` with the verified text.
 
-- **Enquiry email:** set `AGENT_EMAIL` at the top of `assets/main.js`.
+- **Registration email:** set `AGENT_EMAIL` at the top of `assets/main.js`.
 - **Planning status panel:** update the entries and the "Last checked"
   date whenever the published position changes.
 - **Publish a document:** put the file in `docs/`, then in the Documents
   table replace "Available once published" with
   `<a href="docs/filename.pdf" download>Download PDF</a>` and fill in the date.
-- **Register to bid:** set the button's `href` to the auctioneer's listing
-  and remove `is-disabled` and `aria-disabled="true"`.
+- **Publish a data room document:** put it in `data-room/files/` and link it
+  from the table in `data-room/index.html`.
+- **Closing date:** fill in the `To confirm` markers in `index.html`,
+  `terms.html`, `data-room/index.html` and `data-room/bid-form.html`.
 
 ### Source documents are not stored here
 
@@ -46,6 +65,10 @@ Keep the headline, images and main copy as cautious as the small print:
 - Don't promise vacant possession, a relocation date or residential consent.
 - Don't describe the rent as secure or NHS-guaranteed.
 - Don't describe the practice as unlawful occupiers.
+- Never state or imply that the sale is run by or for Standard Life, or any
+  other organisation, unless it has instructed the sale in writing. Don't use
+  its name or branding. The title-holder line stays factual and marked
+  `To confirm`.
 - Always mention the condition 5 use restriction (MO/89/1022) and the withdrawn 2021 application wherever alternative use is discussed.
 - Present suggested plan amendments as suggestions, never as adopted policy.
 - Label any future-use concept image *illustrative and unapproved*.
@@ -65,9 +88,17 @@ Work through this list before the site goes public:
 9. Parking rights and the title boundary are confirmed. The parking area in front of the building is understood to be outside title SY607273.
 10. The current Green Belt status is confirmed, and the planning history is checked against the council's records. Replace the general planning-portal links with direct links to MO/89/1022, MO/91/0243 and MO/2021/2158.
 11. The seller's identity and authority are confirmed. The last register seen (February 2022) names a trustee company as registered proprietor.
-12. The draft banners in `index.html` and `privacy.html` are deleted.
-13. `<meta name="robots" content="noindex, nofollow">` is removed from both pages.
+12. The draft banners on every page are deleted.
+13. `<meta name="robots" content="noindex, nofollow">` is removed from the public pages. Keep it on `data-room/`.
 14. The Cloudflare Access gate is removed (see DEPLOY.md, "Going public").
+15. The solicitor approves `terms.html`, including the non-refundable fee
+    wording, deposit refund timing and treatment, and whether bids are
+    subject to contract.
+16. The agent confirms their client account, their AML and proof-of-funds
+    process, their secure document upload route, and the address and email
+    for sealed bids.
+17. The data room Access policy is live (DEPLOY.md, Step 3b), and the
+    repository is private, or the documents are hosted by the agent.
 
 ## Running locally
 

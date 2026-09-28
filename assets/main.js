@@ -1,9 +1,10 @@
 // Riverbank, Westcott — site behaviour.
 //
-// The enquiry form has no server: submitting it opens a pre-filled email to
-// the selling agent. Set AGENT_EMAIL once the agent is appointed.
+// The site has no server. Forms marked data-mailto build a pre-filled email
+// to the agent; the agent verifies applicants and approves data-room access.
+// Set AGENT_EMAIL once the agent is appointed.
 
-const AGENT_EMAIL = 'agent@example.com'; // TO CONFIRM: selling agent's enquiry address
+const AGENT_EMAIL = 'agent@example.com'; // TO CONFIRM: appointed agent's registrations address
 
 (function () {
   // ---------- Mobile navigation ----------
@@ -40,55 +41,61 @@ const AGENT_EMAIL = 'agent@example.com'; // TO CONFIRM: selling agent's enquiry 
     });
   }
 
-  // ---------- Disabled "Register to bid" placeholder ----------
-  document.querySelectorAll('a[aria-disabled="true"]').forEach(a => {
-    a.addEventListener('click', e => e.preventDefault());
+  // ---------- Print buttons (bid form) ----------
+  document.querySelectorAll('[data-print]').forEach(btn => {
+    btn.addEventListener('click', () => window.print());
   });
 
-  // ---------- Enquiry form -> pre-filled email ----------
-  const form = document.getElementById('enquiry-form');
-  if (!form) return;
-  const errorBox = document.getElementById('form-error');
+  // ---------- Forms -> pre-filled email ----------
+  document.querySelectorAll('form[data-mailto]').forEach(form => {
+    const errorBox = form.querySelector('.form-error');
 
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const data = new FormData(form);
-    const value = name => String(data.get(name) || '').trim();
+    const labelFor = el => {
+      const label = form.querySelector(`label[for="${el.id}"]`);
+      return (el.dataset.label || (label ? label.textContent : el.name))
+        .replace(/\*|\(optional\)/g, '').replace(/\s+/g, ' ').trim();
+    };
 
-    const problems = [];
-    const nameInput = form.elements.name;
-    const emailInput = form.elements.email;
-    nameInput.removeAttribute('aria-invalid');
-    emailInput.removeAttribute('aria-invalid');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const fields = Array.from(form.elements).filter(el => el.name && el.type !== 'submit');
+      fields.forEach(el => el.removeAttribute('aria-invalid'));
 
-    if (!value('name')) { problems.push('your name'); nameInput.setAttribute('aria-invalid', 'true'); }
-    if (!emailInput.checkValidity() || !value('email')) {
-      problems.push('a valid email address');
-      emailInput.setAttribute('aria-invalid', 'true');
-    }
-    if (problems.length) {
-      errorBox.textContent = 'Please enter ' + problems.join(' and ') + '.';
-      errorBox.hidden = false;
-      form.querySelector('[aria-invalid="true"]').focus();
-      return;
-    }
-    errorBox.hidden = true;
+      const invalid = fields.filter(el => {
+        if (!el.required) return false;
+        if (el.type === 'checkbox') return !el.checked;
+        if (el.type === 'radio') return !form.querySelector(`input[name="${el.name}"]:checked`);
+        return !String(el.value).trim() || !el.checkValidity();
+      });
 
-    const lines = [
-      'Enquiry: Riverbank, Westcott',
-      '',
-      'Name: ' + value('name'),
-      'Email: ' + value('email'),
-      'Phone: ' + (value('phone') || '—'),
-      'Company: ' + (value('company') || '—'),
-      'Wider marketing: ' + (data.get('marketing') ? 'Yes, happy to hear about other properties' : 'No'),
-      '',
-      'Message:',
-      value('message') || '—',
-    ];
-    const href = 'mailto:' + AGENT_EMAIL +
-      '?subject=' + encodeURIComponent('Register interest — Riverbank, Westcott') +
-      '&body=' + encodeURIComponent(lines.join('\n'));
-    window.location.href = href;
+      if (invalid.length) {
+        const seen = new Set();
+        const names = invalid.filter(el => !seen.has(el.name) && seen.add(el.name)).map(labelFor);
+        invalid.forEach(el => el.setAttribute('aria-invalid', 'true'));
+        errorBox.textContent = 'Please complete: ' + names.join('; ') + '.';
+        errorBox.hidden = false;
+        invalid[0].focus();
+        return;
+      }
+      errorBox.hidden = true;
+
+      const lines = [form.dataset.mailtoIntro || 'Riverbank, Westcott', ''];
+      const done = new Set();
+      fields.forEach(el => {
+        if (done.has(el.name)) return;
+        done.add(el.name);
+        let value;
+        if (el.type === 'checkbox') value = el.checked ? 'Yes' : 'No';
+        else if (el.type === 'radio') {
+          const checked = form.querySelector(`input[name="${el.name}"]:checked`);
+          value = checked ? checked.value : '—';
+        } else value = String(el.value).trim() || '—';
+        lines.push(`${labelFor(el)}: ${value}`);
+      });
+
+      window.location.href = 'mailto:' + AGENT_EMAIL +
+        '?subject=' + encodeURIComponent(form.dataset.mailto) +
+        '&body=' + encodeURIComponent(lines.join('\n'));
+    });
   });
 })();

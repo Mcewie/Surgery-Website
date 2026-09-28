@@ -274,3 +274,96 @@ input[aria-invalid=true] { border-color: #a4321f; }
 .history td:first-child { white-space: nowrap; font-weight: 600; }
 .conditions { margin: 8px 0 0; padding-left: 18px; }
 .conditions li { margin-bottom: 6px; }
+
+/* =========================================================
+   Sealed bid process
+   ========================================================= */
+:root { --navy: #1f2a38; --navy-soft: #2e3d50; --gold: #b08d57; }
+
+.tender-flag {
+  display: inline-block; margin: -4px 0 16px; padding: 6px 12px;
+  background: var(--navy); color: #fff; border-radius: 4px;
+  font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+}
+.key-terms { border-top: 3px solid var(--navy); }
+
+/* Highlights */
+.highlights { list-style: none; padding: 0; margin: 8px 0 32px; display: grid; gap: 12px; }
+@media (min-width: 640px) { .highlights { grid-template-columns: 1fr 1fr; } }
+.highlights li { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: var(--radius); padding: 14px 16px; }
+.highlights strong { display: block; font-family: var(--serif); font-weight: 500; font-size: 1.15rem; color: var(--navy); }
+.highlights span { font-size: 15px; color: var(--ink-soft); }
+
+/* Process steps */
+.steps { list-style: none; padding: 0; margin: 32px 0; display: grid; gap: 14px; counter-reset: none; }
+@media (min-width: 900px) { .steps { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
+.steps li { display: flex; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.steps h3 { margin: 0 0 4px; font-size: 1.1rem; }
+.steps p { margin: 0; font-size: 15px; color: var(--ink-soft); }
+.step-n { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 15px; }
+
+/* Fee cards */
+.fees { display: grid; gap: 14px; margin: 8px 0 36px; }
+@media (min-width: 760px) { .fees { grid-template-columns: repeat(3, 1fr); } }
+.fee { background: var(--navy); color: #e8ecf1; border-radius: var(--radius); padding: 20px 22px; }
+.fee p { margin: 0 0 6px; font-size: 15px; }
+.fee a { color: #fff; }
+.fee-label { text-transform: uppercase; letter-spacing: .08em; font-size: 12px !important; font-weight: 600; color: #b9c3cf; }
+.fee-amount { font-family: var(--serif); font-size: 2.2rem !important; line-height: 1.1; color: #fff; margin-bottom: 8px !important; }
+.fee-tbc { font-size: 1.5rem !important; }
+.fee .todo { background: rgba(253, 241, 220, .95); }
+.terms-summary { margin-top: 8px; }
+
+/* Locked documents */
+.lock { width: 14px; height: 14px; fill: currentColor; vertical-align: -2px; }
+.docs .locked { color: var(--navy-soft); font-weight: 600; white-space: nowrap; }
+.room-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: var(--navy); border: 1px solid var(--navy); border-radius: 999px; padding: 5px 12px; }
+
+/* Call-to-action band */
+.cta-band { background: var(--navy); color: #e8ecf1; padding: 56px 0; }
+.cta-band h2 { color: #fff; }
+.cta-inner { display: grid; gap: 24px; align-items: center; }
+@media (min-width: 900px) { .cta-inner { grid-template-columns: 1.4fr 1fr; } }
+.cta-actions { display: grid; gap: 12px; justify-items: start; }
+.cta-contact { font-size: 15px; margin: 0; }
+.btn-light { background: #fff; color: var(--navy); }
+.btn-light:hover { background: var(--bg-alt); color: var(--navy); }
+.btn-block { width: 100%; }
+
+/* Registration page */
+.reg-grid { display: grid; gap: 32px; }
+@media (min-width: 960px) { .reg-grid { grid-template-columns: 1fr 1.1fr; gap: 56px; align-items: start; } .reg-intro { position: sticky; top: 90px; } }
+.reg-intro h1 { font-size: clamp(2rem, 4.5vw, 2.8rem); }
+.mini-steps { padding-left: 20px; margin: 0 0 24px; }
+.mini-steps li { margin-bottom: 8px; }
+.panel-title { font-size: 1.15rem; margin: 0 0 8px; }
+.panel ul { padding-left: 20px; margin: 0; }
+.facts.compact div { padding: 9px 0; }
+fieldset { border: 0; padding: 0; margin: 0 0 22px; min-width: 0; }
+legend { font-family: var(--serif); font-size: 1.2rem; color: var(--navy); padding: 0; margin-bottom: 12px; }
+.field-label { font-weight: 600; font-size: 15px; margin: 0 0 6px; }
+.radios { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.radios label { font-weight: 400; display: inline-flex; gap: 8px; align-items: center; margin: 0; }
+.radios input { width: 18px; height: 18px; accent-color: var(--navy); }
+.check a { text-decoration: underline; }
+
+/* Terms page */
+.terms h2 { font-size: 1.25rem; margin-top: 1.8em; }
+.terms ul { padding-left: 22px; }
+
+/* Bid form (printable) */
+.bid-form h2 { font-size: 1.15rem; margin: 1.6em 0 .6em; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+.blank { border-bottom: 1px solid var(--ink-soft); min-height: 44px; display: flex; align-items: flex-end; margin-bottom: 12px; }
+.blank span { font-size: 12px; color: var(--muted); padding-bottom: 2px; }
+.blank.big { min-height: 64px; }
+.blank.tall { min-height: 110px; }
+.blank-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media print {
+  .no-print, .site-nav, .site-foot, .draft-banner { display: none !important; }
+  body.print-doc { background: #fff; font-size: 12pt; }
+  .print-doc .page { padding: 0; }
+  .print-doc .todo { border: 0; background: none; color: #000; }
+}
+.btn-primary { background: var(--navy); }
+.btn-primary:hover { background: var(--navy-soft); }
+.panel .panel-title { margin-top: 0; }
