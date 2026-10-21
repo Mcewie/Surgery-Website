@@ -54,6 +54,16 @@ replace the whole `<span class="todo">…</span>` with the verified text.
 - **Closing date:** fill in the `To confirm` markers in `index.html`,
   `terms.html`, `data-room/index.html` and `data-room/bid-form.html`.
 
+### Typeface
+
+The site is set in **Univers**, at light weights. Univers is a licensed
+typeface, so it isn't loaded from a free font service. Visitors who have it
+installed see it straight away. Everyone else sees **Inter Light**, loaded
+from Google Fonts. To show Univers to everyone, buy a webfont licence
+(for example from Linotype or Monotype), add the font files to `assets/fonts/`,
+and declare them with `@font-face` at the top of `assets/style.css`. The font
+stack already lists Univers first.
+
 ### Source documents are not stored here
 
 The family's source documents stay out of this repository, and none of them is published as a download. That covers the 2022 valuation report (prepared for a third party), copies of the title register and plan, and the Simon Best Associates planning drawings, which are copyright. The floor plan on the site is our own indicative schematic. Planning records are linked on the council's portal rather than rehosted.
