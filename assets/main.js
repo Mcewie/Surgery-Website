@@ -1,42 +1,101 @@
-// Shared site chrome: injects the top navigation and footer into every
-// page that contains <div data-include="nav"></div> and
-// <div data-include="footer"></div>.
+// Riverbank, Westcott — site behaviour.
+//
+// The site has no server. Forms marked data-mailto build a pre-filled email
+// to the agent; the agent verifies applicants and approves data-room access.
+// Set AGENT_EMAIL once the agent is appointed.
+
+const AGENT_EMAIL = 'agent@example.com'; // TO CONFIRM: appointed agent's registrations address
 
 (function () {
-  const navHTML = `
-    <header class="site-nav">
-      <div class="nav-inner container">
-        <a class="nav-brand" href="index.html">
-          <span class="brand-mark small">RS</span>
-          <span>Riverbank Surgery</span>
-        </a>
-        <nav>
-          <a href="index.html" data-nav="index">Home</a>
-          <a href="overview.html" data-nav="overview">Overview</a>
-          <a href="timeline.html" data-nav="timeline">Timeline</a>
-          <a href="documents.html" data-nav="documents">Documents</a>
-          <a href="information.html" data-nav="information">Information</a>
-          <a href="updates.html" data-nav="updates">Updates</a>
-          <a href="contact.html" data-nav="contact">Contact</a>
-        </nav>
-      </div>
-    </header>
-  `;
+  // ---------- Mobile navigation ----------
+  const toggle = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('nav-links');
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    nav.addEventListener('click', e => {
+      if (e.target.closest('a')) {
+        nav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
-  const footerHTML = `
-    <footer class="site-foot">
-      <div class="container">
-        <p>&copy; ${new Date().getFullYear()} Riverbank Surgery — private project workspace.</p>
-        <p class="muted small">Confidential. Do not share access without authorisation.</p>
-      </div>
-    </footer>
-  `;
+  // ---------- Highlight the section in view ----------
+  const links = nav ? Array.from(nav.querySelectorAll('a[href^="#"]')) : [];
+  if (links.length && 'IntersectionObserver' in window) {
+    const byId = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        links.forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+        const link = byId.get(entry.target.id);
+        if (link) { link.classList.add('active'); link.setAttribute('aria-current', 'true'); }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    byId.forEach((_, id) => {
+      const section = document.getElementById(id);
+      if (section) observer.observe(section);
+    });
+  }
 
-  document.querySelectorAll('[data-include="nav"]').forEach(el => { el.outerHTML = navHTML; });
-  document.querySelectorAll('[data-include="footer"]').forEach(el => { el.outerHTML = footerHTML; });
+  // ---------- Print buttons (bid form) ----------
+  document.querySelectorAll('[data-print]').forEach(btn => {
+    btn.addEventListener('click', () => window.print());
+  });
 
-  // Highlight the current nav item.
-  const path = window.location.pathname.split('/').pop().replace('.html', '') || 'index';
-  const activeLink = document.querySelector(`[data-nav="${path}"]`);
-  if (activeLink) activeLink.classList.add('active');
+  // ---------- Forms -> pre-filled email ----------
+  document.querySelectorAll('form[data-mailto]').forEach(form => {
+    const errorBox = form.querySelector('.form-error');
+
+    const labelFor = el => {
+      const label = form.querySelector(`label[for="${el.id}"]`);
+      return (el.dataset.label || (label ? label.textContent : el.name))
+        .replace(/\*|\(optional\)/g, '').replace(/\s+/g, ' ').trim();
+    };
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const fields = Array.from(form.elements).filter(el => el.name && el.type !== 'submit');
+      fields.forEach(el => el.removeAttribute('aria-invalid'));
+
+      const invalid = fields.filter(el => {
+        if (!el.required) return false;
+        if (el.type === 'checkbox') return !el.checked;
+        if (el.type === 'radio') return !form.querySelector(`input[name="${el.name}"]:checked`);
+        return !String(el.value).trim() || !el.checkValidity();
+      });
+
+      if (invalid.length) {
+        const seen = new Set();
+        const names = invalid.filter(el => !seen.has(el.name) && seen.add(el.name)).map(labelFor);
+        invalid.forEach(el => el.setAttribute('aria-invalid', 'true'));
+        errorBox.textContent = 'Please complete: ' + names.join('; ') + '.';
+        errorBox.hidden = false;
+        invalid[0].focus();
+        return;
+      }
+      errorBox.hidden = true;
+
+      const lines = [form.dataset.mailtoIntro || 'Riverbank, Westcott', ''];
+      const done = new Set();
+      fields.forEach(el => {
+        if (done.has(el.name)) return;
+        done.add(el.name);
+        let value;
+        if (el.type === 'checkbox') value = el.checked ? 'Yes' : 'No';
+        else if (el.type === 'radio') {
+          const checked = form.querySelector(`input[name="${el.name}"]:checked`);
+          value = checked ? checked.value : '—';
+        } else value = String(el.value).trim() || '—';
+        lines.push(`${labelFor(el)}: ${value}`);
+      });
+
+      window.location.href = 'mailto:' + AGENT_EMAIL +
+        '?subject=' + encodeURIComponent(form.dataset.mailto) +
+        '&body=' + encodeURIComponent(lines.join('\n'));
+    });
+  });
 })();

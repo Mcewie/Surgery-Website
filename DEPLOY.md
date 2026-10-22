@@ -1,8 +1,9 @@
-# Deploying the Riverbank Surgery site
+# Deploying the Riverbank, Westcott site
 
 This guide is written for **non-developers**. Follow each step in order
-and the site will be online, password-protected by email, in roughly
-30 minutes.
+and the draft site will be online, protected by email login, in roughly
+30 minutes. While it is a draft, keep it behind the login. The
+"Going public" section at the end explains how to open it up at launch.
 
 You will need:
 
@@ -47,7 +48,7 @@ You don't need to add a domain or a credit card.
    access to just the `Surgery-Website` repo.
 4. Select the **Surgery-Website** repository and click **Begin setup**.
 5. Fill in the build settings:
-   - **Project name:** `riverbank-surgery` (or anything you like — this
+   - **Project name:** `riverbank-westcott` (or anything you like — this
      becomes part of the URL)
    - **Production branch:** `main` *(or whichever branch holds the live
      site — see "About branches" below)*
@@ -59,7 +60,7 @@ You don't need to add a domain or a credit card.
 In about 60 seconds you'll see a green tick and a URL like:
 
 ```
-https://riverbank-surgery.pages.dev
+https://riverbank-westcott.pages.dev
 ```
 
 Click it — the site is live, but currently anyone with the link can
@@ -67,10 +68,10 @@ view it. Step 3 fixes that.
 
 ### About branches
 
-The site code currently lives on a branch called
-`claude/riverbank-surgery-website-dOfRq`. For day-to-day life it's
-easier to merge this branch into `main` (or rename it) so the URL stays
-stable. Ask me to do this and I'll handle it.
+The sale website is being built on the branch
+`claude/dads-new-website-otaph2` and reviewed through a pull request.
+Once the pull request is merged into `main`, point Cloudflare Pages at
+`main` so the URL stays stable.
 
 ---
 
@@ -83,11 +84,11 @@ stable. Ask me to do this and I'll handle it.
 2. In Zero Trust, go to **Access** → **Applications** → **Add an
    application** → **Self-hosted**.
 3. Fill in:
-   - **Application name:** `Riverbank Surgery`
+   - **Application name:** `Riverbank, Westcott`
    - **Session duration:** `24 hours` (how long someone stays signed
      in before being asked again)
    - **Application domain:** the `*.pages.dev` URL from Step 2, e.g.
-     `riverbank-surgery.pages.dev`
+     `riverbank-westcott.pages.dev`
 4. Click **Next**.
 5. **Add a policy:**
    - **Policy name:** `Authorised users`
@@ -105,11 +106,43 @@ Anyone whose email is **not** on your list will be politely refused.
 
 ---
 
+## Step 3b — The approved-bidder data room
+
+The bid pack lives in the `data-room/` folder. Only approved bidders may see
+it, and a second Cloudflare Access application enforces that.
+
+1. In **Zero Trust** → **Access** → **Applications**, click **Add an
+   application** → **Self-hosted**.
+2. **Application name:** `Riverbank data room`. For **Application domain**,
+   enter your site's domain, and set **Path** to `data-room`.
+3. Add a policy called `Approved bidders`, with **Action** set to `Allow`,
+   **Include** → **Emails**, and one approved bidder's email per line.
+   Also add the agent's own email so they can check the room.
+4. Save.
+
+**To approve a bidder** (after the agent has verified their ID and funds
+and received the £200 fee and £1,000 deposit), add their email to the
+`Approved bidders` policy. They then sign in at `<your site>/data-room/`
+with a one-time PIN sent to that email.
+
+**To remove a bidder**, delete their email from the policy. It takes effect
+immediately.
+
+While the site is still a draft, the Step 3 gate protects everything,
+including the data room. When the main site goes public, **leave this data
+room application in place**.
+
+> Data room files are committed to the GitHub repository. Keep the
+> repository **private**. Otherwise ask the agent to host the documents in
+> their own data room and link to it from `data-room/index.html`.
+
+---
+
 ## Step 4 (optional) — Use a custom domain
 
 The `*.pages.dev` URL works forever, but if you own a domain (e.g.
-`riverbanksurgery.co.uk`) you can use a friendlier address like
-`project.riverbanksurgery.co.uk`.
+`yourdomain.co.uk`) you can use a friendlier address like
+`riverbank.yourdomain.co.uk`.
 
 If/when you want this, tell me the domain and I'll write a separate
 short walkthrough — it's an extra ~10 minutes of clicks.
@@ -122,9 +155,9 @@ You don't have to touch the code yourself. The workflow is:
 
 1. **Email or send me what you want changed** in plain English. For
    example:
-   - "Replace the overview page with this text: …"
-   - "Add a milestone for July 2026: planning approval received."
-   - "Add this PDF to the Documents page, called 'Cost Plan v2'."
+   - "The auctioneer has confirmed the guide price: …"
+   - "Update the planning status panel: the examiner's report was published on …"
+   - "Add this EPC to the Documents section."
 2. I make the change in the repository and commit it.
 3. Cloudflare Pages spots the new commit and re-publishes the site
    within ~60 seconds.
@@ -140,7 +173,7 @@ where it should appear.
 To add someone:
 
 1. Go to **Cloudflare Zero Trust** → **Access** → **Applications**.
-2. Click your **Riverbank Surgery** application.
+2. Click your **Riverbank, Westcott** application.
 3. Open the **Policies** tab → click your `Authorised users` policy →
    add their email to the list → **Save**.
 
@@ -161,3 +194,18 @@ The change takes effect immediately.
   — that signs you out everywhere.
 
 If anything else goes wrong, take a screenshot and send it over.
+
+---
+
+## Going public at launch
+
+Work through the launch checklist in `README.md` first. The site must
+not go public while it still shows **To confirm** markers or the draft banner.
+
+Then remove the login:
+
+1. Go to **Cloudflare Zero Trust** → **Access** → **Applications**.
+2. Click the **Riverbank, Westcott** application → **Delete**.
+
+The site is then public at its `*.pages.dev` URL (or your custom domain).
+Visit it in a private window to check you aren't asked to log in.
